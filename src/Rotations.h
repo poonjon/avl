@@ -12,6 +12,6 @@ int getHeight(Node *elem);
 Node *rightRotate(Node *elem);
 Node *leftRotate(Node *elem);
 Node *doubleRightRotate(Node *elem);
-Node *doubleleftRotate(Node *elem);
+Node *doubleLeftRotate(Node *elem);
 
 #endif // rotations_H
