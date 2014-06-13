@@ -1,8 +1,8 @@
-#ifndef rotations_H
-#define rotations_H
+#ifndef Rotations_H
+#define Rotations_H
 
 typedef struct Node{
-  int rank;
+  int balance;
   struct Node *leftChild;
   struct Node *rightChild;
   int data;
@@ -13,5 +13,9 @@ Node *rightRotate(Node *elem);
 Node *leftRotate(Node *elem);
 Node *doubleRightRotate(Node *elem);
 Node *doubleLeftRotate(Node *elem);
+Node *checkDoubleRightRightExchange(Node *elem);
+Node *checkDoubleRightLeftExchange(Node *elem);
+Node *checkDoubleLeftLeftExchange(Node *elem);
+Node *checkDoubleLeftRightExchange(Node *elem);
 
-#endif // rotations_H
+#endif // Rotations_H

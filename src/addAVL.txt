@@ -1,0 +1,18 @@
+#include "addaAVL.h"
+#include <stdio.h>
+
+/**
+*           
+*
+*       =>  (1)
+*
+*
+**/
+void test_avlAdd_1_should_pass(){
+  Node Node1 = {.data = 50, .balance = 2, .leftChild = &Node2, .rightChild = &Node3};
+  Node *root;
+  
+  
+  TEST_ASSERT_EQUAL(1, avlAdd(Node *root, Node *nodeToAdd));
+
+}

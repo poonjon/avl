@@ -38,6 +38,10 @@ extern void test_doubleRightRotate_should_rotate_to_balance_tree(void);
 extern void test_doubleRightRotate_6_elem_should_rotate_to_balance_tree(void);
 extern void test_doubleRightRotate_6_elem2_should_rotate_to_balance_tree(void);
 extern void test_doubleLeftRotate_should_rotate_to_balance_tree(void);
+extern void test_doubleLeftRotate_6_elem_should_rotate_to_balance_tree(void);
+extern void test_doubleLeftRotate_6_elem2_should_rotate_to_balance_tree(void);
+extern void test_getheight_3_should_pass(void);
+extern void test_getheight_4_should_pass(void);
 
 
 //=======Test Reset Option=====
@@ -53,14 +57,18 @@ int main(void)
 {
   Unity.TestFile = "test_Rotations.c";
   UnityBegin();
-  RUN_TEST(test_leftRotate_should_rotate_to_balance_tree, 14);
-  RUN_TEST(test_leftRotate_6_elem_should_rotate_to_balance_tree, 39);
-  RUN_TEST(test_rightRotate_should_rotate_to_balance_tree, 71);
-  RUN_TEST(test_rightRotate_6_elem_should_rotate_to_balance_tree, 96);
-  RUN_TEST(test_doubleRightRotate_should_rotate_to_balance_tree, 128);
-  RUN_TEST(test_doubleRightRotate_6_elem_should_rotate_to_balance_tree, 153);
-  RUN_TEST(test_doubleRightRotate_6_elem2_should_rotate_to_balance_tree, 187);
-  RUN_TEST(test_doubleLeftRotate_should_rotate_to_balance_tree, 215);
+  RUN_TEST(test_leftRotate_should_rotate_to_balance_tree, 15);
+  RUN_TEST(test_leftRotate_6_elem_should_rotate_to_balance_tree, 40);
+  RUN_TEST(test_rightRotate_should_rotate_to_balance_tree, 72);
+  RUN_TEST(test_rightRotate_6_elem_should_rotate_to_balance_tree, 97);
+  RUN_TEST(test_doubleRightRotate_should_rotate_to_balance_tree, 129);
+  RUN_TEST(test_doubleRightRotate_6_elem_should_rotate_to_balance_tree, 154);
+  RUN_TEST(test_doubleRightRotate_6_elem2_should_rotate_to_balance_tree, 188);
+  RUN_TEST(test_doubleLeftRotate_should_rotate_to_balance_tree, 220);
+  RUN_TEST(test_doubleLeftRotate_6_elem_should_rotate_to_balance_tree, 245);
+  RUN_TEST(test_doubleLeftRotate_6_elem2_should_rotate_to_balance_tree, 279);
+  RUN_TEST(test_getheight_3_should_pass, 311);
+  RUN_TEST(test_getheight_4_should_pass, 329);
 
   return (UnityEnd());
 }
