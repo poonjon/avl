@@ -178,7 +178,3 @@ int getHeight(Node *elem){
   else if(right >= left)
     return right;
 }
-
-Node *avlAdd(Node *root, Node *nodeToAdd){
-
-}

@@ -1,18 +1,66 @@
-#include "addaAVL.h"
-#include <stdio.h>
-
 /**
-*           
-*
-*       =>  (1)
-*
-*
-**/
-void test_avlAdd_1_should_pass(){
-  Node Node1 = {.data = 50, .balance = 2, .leftChild = &Node2, .rightChild = &Node3};
-  Node *root;
+*         100                          120 
+*        /    \                     /       \
+*      50    150                  100       150
+*     /  \   /   \               /   \     /    \  
+*   1    75 120  200        => 50   110 130     200 
+*           /   \              /\          \       \
+*         110    130         1  75         140      250 
+*                  \                      
+*                   140                     
+*/
+void test_addavl_node4_120_should_pass(){
+  Node Node1 = {.data = 1, .balance = 0, .leftChild = NULL, .rightChild = NULL};
+  Node Node2 = {.data = 50, .balance = 0, .leftChild = NULL, .rightChild = NULL};
+  Node Node3 = {.data = 100, .balance = 0, .leftChild = NULL, .rightChild = NULL};
+  Node Node4 = {.data = 75, .balance = 0, .leftChild = NULL, .rightChild = NULL};
+  Node Node5 = {.data = 150, .balance = 0, .leftChild = NULL, .rightChild = NULL};
+  Node Node6 = {.data = 200, .balance = 0, .leftChild = NULL, .rightChild = NULL};
+  Node Node7 = {.data = 120, .balance = 0, .leftChild = NULL, .rightChild = NULL};
+  Node Node8 = {.data = 110, .balance = 0, .leftChild = NULL, .rightChild = NULL};
+  Node Node9 = {.data = 130, .balance = 0, .leftChild = NULL, .rightChild = NULL};
+  Node Node10 = {.data = 250, .balance = 0, .leftChild = NULL, .rightChild = NULL};
+  Node Node11 = {.data = 140, .balance = 0, .leftChild = NULL, .rightChild = NULL};
+  Node *root = NULL;
+  Node *tempLeft = root;
+  Node *tempRight = root;
   
+  root = avlAdd(root, &Node1);
+  root = avlAdd(root, &Node2);
+  root = avlAdd(root, &Node3);
+  root = avlAdd(root, &Node4);
+  root = avlAdd(root, &Node5);
+  root = avlAdd(root, &Node6);
+  root = avlAdd(root, &Node7);
+  root = avlAdd(root, &Node8);
+  root = avlAdd(root, &Node9);
+  root = avlAdd(root, &Node10);
+  root = avlAdd(root, &Node11);
+  tempRight = root->rightChild;
+  tempLeft = root->leftChild;
+  tempLeft2 = tempLeft->leftChild;
+  tempLeftRight = tempLeft->rightChild;
+  tempRightRight = tempRight->rightChild;
+  tempRightLeft = tempRight->leftChild;
+ 
+  TEST_ASSERT_EQUAL(150, root->rightChild->data);  
+  TEST_ASSERT_EQUAL(50, root->leftChild->data);
+  TEST_ASSERT_EQUAL(100, root->data);
+  TEST_ASSERT_EQUAL(200, tempRight->rightChild->data);
+  TEST_ASSERT_EQUAL(75, tempLeft->rightChild->data);
+  TEST_ASSERT_EQUAL(120, tempRight->leftChild->data);
+  TEST_ASSERT_EQUAL(1, tempLeft->leftChild->data);
+  TEST_ASSERT_EQUAL(110, tempLeft->leftChild->data);
+  TEST_ASSERT_EQUAL(130, tempLeft->leftChild->data);
+  TEST_ASSERT_EQUAL(250, tempLeft->leftChild->data);
+  TEST_ASSERT_EQUAL(140, tempLeft->leftChild->data);
   
-  TEST_ASSERT_EQUAL(1, avlAdd(Node *root, Node *nodeToAdd));
-
+   TEST_ASSERT_EQUAL(0, root->balance);
+   TEST_ASSERT_EQUAL(0, root->leftChild->balance);
+   TEST_ASSERT_EQUAL(0, root->rightChild->balance);  
+   TEST_ASSERT_EQUAL(0, tempRight->rightChild->balance);
+   TEST_ASSERT_EQUAL(0, tempRight->leftChild->balance);
+   TEST_ASSERT_EQUAL(0, tempLeft->rightChild->balance);
+   TEST_ASSERT_EQUAL(0, tempLeft->leftChild->balance);
+  
 }
