@@ -55,35 +55,45 @@ Node *avlAdd(Node *root, Node *nodeToAdd){
       root = leftRotate(root);
     else if(root->balance == 2 && root->rightChild->balance == -1)
       root = doubleLeftRotate(root);
-    if(root->balance == -2 && root->rightChild->balance == 1)
+    else if(root->balance == -2 && root->rightChild->balance == 1)
       root = rightRotate(root);
-    if(root->balance == -2 && root->rightChild->balance == -1)
+    else if(root->balance == -2 && root->rightChild->balance == -1)
       root = doubleRightRotate(root);
     return root;
   }  
 }
   
 Node *avlGetReplacer(Node **ptrToRoot){
-  Node *temp = (*ptrToRoot)->rightChild;
-  if((*ptrToRoot)->leftChild == NULL && (*ptrToRoot)->rightChild == NULL){
-    (*ptrToRoot)->data = 0;
-    (*ptrToRoot)->balance = 0;
-    (*ptrToRoot)->leftChild = NULL;
-    (*ptrToRoot)->rightChild = NULL;
-  }  
+  Node *replace, *temp;
   
-  else if((*ptrToRoot)->leftChild != NULL){
-    (*ptrToRoot) = (*ptrToRoot)->leftChild;
+  if((*ptrToRoot)->rightChild == NULL){
+    replace = (*ptrToRoot);
+    (*ptrToRoot) = (*ptrToRoot)->leftChild;  
+    return replace;
   }
-   
-  if((*ptrToRoot)->balance == 2 && (*ptrToRoot)->rightChild->balance == 1)
-    (*ptrToRoot) = leftRotate((*ptrToRoot));
-  else if((*ptrToRoot)->balance == 2 && (*ptrToRoot)->rightChild->balance == -1)
-    (*ptrToRoot) = doubleLeftRotate((*ptrToRoot));
-  if((*ptrToRoot)->balance == -2 && (*ptrToRoot)->rightChild->balance == 1)
-    (*ptrToRoot) = rightRotate((*ptrToRoot));
-  if((*ptrToRoot)->balance == -2 && (*ptrToRoot)->rightChild->balance == -1)
-    (*ptrToRoot) = doubleRightRotate((*ptrToRoot));
   
-  return (*ptrToRoot);
+  else{
+    
+    replace = avlGetReplacer(&(*ptrToRoot)->rightChild);
+    
+    if((*ptrToRoot)->rightChild == NULL)
+      (*ptrToRoot)->balance--;
+    else if((*ptrToRoot)->rightChild->balance == 0)
+      (*ptrToRoot)->balance--;
+    
+    if((*ptrToRoot)->balance == 2 && (*ptrToRoot)->rightChild->balance == 1)
+      (*ptrToRoot) = leftRotate((*ptrToRoot));
+    else if((*ptrToRoot)->balance == 2 && (*ptrToRoot)->rightChild->balance == -1)
+      (*ptrToRoot) = doubleLeftRotate((*ptrToRoot));
+    else if((*ptrToRoot)->balance == 2 && (*ptrToRoot)->rightChild->balance == 0)
+      (*ptrToRoot) = leftRotate((*ptrToRoot));
+    else if((*ptrToRoot)->balance == -2 && (*ptrToRoot)->leftChild->balance == 0)
+      (*ptrToRoot) = rightRotate((*ptrToRoot));
+    else if((*ptrToRoot)->balance == -2 && (*ptrToRoot)->leftChild->balance == -1)
+      (*ptrToRoot) = rightRotate((*ptrToRoot));
+    else if((*ptrToRoot)->balance == -2 && (*ptrToRoot)->leftChild->balance == 1)
+      (*ptrToRoot) = doubleRightRotate((*ptrToRoot));
+  }
+  
+  return replace;
 }
