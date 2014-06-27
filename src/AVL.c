@@ -100,17 +100,25 @@ Node *avlGetReplacer(Node **ptrToRoot){
 
 Node *avlRemove(Node **ptrToRoot, Node *nodeToRemove){
   Node *remove;
-  Node *nullMaster = NULL;
+  Node *tempLeft, *tempRight;
   
     if(nodeToRemove->data == (*ptrToRoot)->data){
       if(nodeToRemove->leftChild != NULL){
+        tempLeft = (*ptrToRoot)->leftChild;
+        tempRight = (*ptrToRoot)->rightChild;
         (*ptrToRoot) = avlGetReplacer(&nodeToRemove->leftChild);
+        (*ptrToRoot)->leftChild = tempLeft;
+        (*ptrToRoot)->rightChild = tempRight;
         remove = nodeToRemove;
         nodeToRemove = NULL;
         return remove;
       }     
       else if(nodeToRemove->rightChild != NULL){
+        tempLeft = (*ptrToRoot)->leftChild;
+        tempRight = (*ptrToRoot)->rightChild;
         (*ptrToRoot) = avlGetReplacer(&nodeToRemove->rightChild);
+        (*ptrToRoot)->leftChild = tempLeft;
+        (*ptrToRoot)->rightChild = tempRight;
         remove = nodeToRemove;
         nodeToRemove = NULL;
         return remove;
