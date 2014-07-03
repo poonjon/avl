@@ -2,8 +2,8 @@
 #include "unity.h"
 #include "Rotations.h"
 
-void setUp(void){}
-void tearDown(void){}
+void setUp(){}
+void tearDown(){}
 
 /**
 *     1
@@ -520,14 +520,14 @@ void test_getReplacer_should_get_200_case4_pass(){
   
   TEST_ASSERT_EQUAL_PTR(&Node8, result);  
   TEST_ASSERT_EQUAL(200, result->data);    
-  TEST_ASSERT_EQUAL(0, root->balance);  
+  TEST_ASSERT_EQUAL(1, root->balance);  
   TEST_ASSERT_EQUAL(40, root->data);  
 }
 
 /**
 *     (1)
 */
-void test_avlRemove_should_get_NULL_pass(){
+void test_avlRemove_left_tree_should_get_NULL_pass(){
   Node Node1 = {.data = 1, .balance = 0, .leftChild = NULL, .rightChild = NULL};
   Node nodeToRemove = {.data = 1, .balance = 0, .leftChild = NULL, .rightChild = NULL};
   Node *root = &Node1;
@@ -544,11 +544,38 @@ void test_avlRemove_should_get_NULL_pass(){
 }
 
 /**
+ *        50                 50
+ *      /   \               /  \
+ *     25   150    =>     25   150
+ *             \                  \
+ *             200                200
+ *
+ */
+void test_avlRemove_left_tree_cannot_be_found_should_get_NULL_pass(){
+  Node Node4 = {.data = 200, .balance = 0, .leftChild = NULL, .rightChild = NULL};
+  Node Node3 = {.data = 150, .balance = 1, .leftChild = NULL, .rightChild = &Node4};
+  Node Node2 = {.data = 25, .balance = 0, .leftChild = NULL, .rightChild = NULL};
+  Node Node1 = {.data = 50, .balance = 1, .leftChild = &Node2, .rightChild = &Node3};
+  Node nodeToRemove = {.data = 1, .balance = 0, .leftChild = NULL, .rightChild = NULL};
+  Node *root = &Node1;
+  Node *result;
+
+  result = avlRemove(&root, &nodeToRemove);
+  
+  TEST_ASSERT_EQUAL_PTR(&Node1, root);  
+  TEST_ASSERT_EQUAL(25, root->leftChild->data);  
+  TEST_ASSERT_EQUAL(150, root->rightChild->data);  
+  TEST_ASSERT_NULL(result);
+  TEST_ASSERT_EQUAL(50, root->data);  
+  
+}
+
+/**
 *      50           50
 *     /  \     =>     \
 * (25)    150          150
 */
-void test_avlRemove_should_get_25_pass(){
+void test_avlRemove_left_tree_should_get_25_pass(){
   Node Node3 = {.data = 150, .balance = 0, .leftChild = NULL, .rightChild = NULL};
   Node Node2 = {.data = 25, .balance = 0, .leftChild = NULL, .rightChild = NULL};
   Node Node1 = {.data = 50, .balance = 0, .leftChild = &Node2, .rightChild = &Node3};
@@ -560,6 +587,7 @@ void test_avlRemove_should_get_25_pass(){
   
   TEST_ASSERT_EQUAL_PTR(&Node1, root);  
   TEST_ASSERT_EQUAL(25, result->data);  
+  TEST_ASSERT_EQUAL(150, root->rightChild->data);  
   TEST_ASSERT_EQUAL(0, result->balance);  
   TEST_ASSERT_EQUAL(50, root->data);  
   
@@ -572,7 +600,7 @@ void test_avlRemove_should_get_25_pass(){
 *          \
 *          200 
 */
-void test_avlRemove_should_get_25_case2_pass(){
+void test_avlRemove_left_tree_should_get_25_case2_pass(){
   Node Node4 = {.data = 200, .balance = 0, .leftChild = NULL, .rightChild = NULL};
   Node Node3 = {.data = 150, .balance = 1, .leftChild = NULL, .rightChild = &Node4};
   Node Node2 = {.data = 25, .balance = 0, .leftChild = NULL, .rightChild = NULL};
@@ -585,6 +613,8 @@ void test_avlRemove_should_get_25_case2_pass(){
   
   TEST_ASSERT_EQUAL_PTR(&Node3, root);  
   TEST_ASSERT_EQUAL(25, result->data);  
+  TEST_ASSERT_EQUAL(50, root->leftChild->data);  
+  TEST_ASSERT_EQUAL(200, root->rightChild->data);  
   TEST_ASSERT_EQUAL(0, result->balance);  
   TEST_ASSERT_EQUAL(150, root->data);  
   
@@ -597,7 +627,7 @@ void test_avlRemove_should_get_25_case2_pass(){
 *   /      \                \ 
 *  1       200              200 
 */
-void test_avlRemove_should_get_25_case3_pass(){
+void test_avlRemove_left_tree_should_get_25_case3_pass(){
   Node Node5 = {.data = 200, .balance = 0, .leftChild = NULL, .rightChild = NULL};
   Node Node4 = {.data = 150, .balance = 1, .leftChild = NULL, .rightChild = &Node5};
   Node Node3 = {.data = 1, .balance = 0, .leftChild = NULL, .rightChild = NULL};
@@ -610,12 +640,13 @@ void test_avlRemove_should_get_25_case3_pass(){
   result = avlRemove(&root, &nodeToRemove);
   
   TEST_ASSERT_EQUAL_PTR(&Node1, root);  
-  TEST_ASSERT_EQUAL(25, result->data);  
+  TEST_ASSERT_EQUAL(25, result->data); 
+  TEST_ASSERT_EQUAL(1, root->leftChild->data);  
+  TEST_ASSERT_EQUAL(150, root->rightChild->data);    
   TEST_ASSERT_EQUAL(-1, result->balance);  
   TEST_ASSERT_EQUAL(50, root->data);  
   
 }
-
 
 /** 
 *     100                    100                150
@@ -626,7 +657,7 @@ void test_avlRemove_should_get_25_case3_pass(){
 *      /  \                  /  \                       
 *    120  175               120 175         
 */
-void test_avlRemove_should_get_1_pass(){
+void test_avlRemove_left_tree_should_get_1_pass(){
   Node Node8 = {.data = 220, .balance = 0, .leftChild = NULL, .rightChild = NULL};
   Node Node7 = {.data = 175, .balance = 0, .leftChild = NULL, .rightChild = NULL};
   Node Node6 = {.data = 120, .balance = 0, .leftChild = NULL, .rightChild = NULL};
@@ -643,7 +674,9 @@ void test_avlRemove_should_get_1_pass(){
   
   TEST_ASSERT_EQUAL_PTR(&Node5, root);  
   TEST_ASSERT_EQUAL(1, result->data);  
-  TEST_ASSERT_EQUAL(0, result->balance);  
+  TEST_ASSERT_EQUAL(0, root->balance);  
+  TEST_ASSERT_EQUAL(100, root->leftChild->data);  
+  TEST_ASSERT_EQUAL(200, root->rightChild->data);  
   TEST_ASSERT_EQUAL(150, root->data);  
   TEST_ASSERT_EQUAL(220, root->rightChild->rightChild->data);  
 }
@@ -651,13 +684,13 @@ void test_avlRemove_should_get_1_pass(){
 /**
 *     100                  100              150  
 *    /   \                 / \              /  \
-*   25   200      =>     25   200      =>   100   200 
+*   25   200      =>     25   200      =>  100   200 
 *  /     / \                   /\           /       \
 * (1)  150 220             150    220    175          220
 *      /                    \
 *    120                    175
 */
-void test_avlRemove_should_get_1_case2_pass(){
+void test_avlRemove_left_tree_should_get_1_case2_pass(){
   Node Node7 = {.data = 220, .balance = 0, .leftChild = NULL, .rightChild = NULL};
   Node Node6 = {.data = 120, .balance = 0, .leftChild = NULL, .rightChild = NULL};
   Node Node5 = {.data = 150, .balance = -1, .leftChild = &Node6, .rightChild = NULL};
@@ -673,6 +706,8 @@ void test_avlRemove_should_get_1_case2_pass(){
   
   TEST_ASSERT_EQUAL_PTR(&Node5, root);  
   TEST_ASSERT_EQUAL(1, result->data);  
+  TEST_ASSERT_EQUAL(100, root->leftChild->data);  
+  TEST_ASSERT_EQUAL(200, root->rightChild->data);  
   TEST_ASSERT_EQUAL(0, result->balance);  
   TEST_ASSERT_EQUAL(150, root->data);  
    
@@ -687,7 +722,7 @@ void test_avlRemove_should_get_1_case2_pass(){
 *         \                    \ 
 *          175                  175 
 */
-void test_avlRemove_should_get_1_case3_pass(){
+void test_avlRemove_left_tree_should_get_1_case3_pass(){
   Node Node7 = {.data = 220, .balance = 0, .leftChild = NULL, .rightChild = NULL};
   Node Node6 = {.data = 175, .balance = 0, .leftChild = NULL, .rightChild = NULL};
   Node Node5 = {.data = 150, .balance = 1, .leftChild = NULL, .rightChild = &Node6};
@@ -703,7 +738,9 @@ void test_avlRemove_should_get_1_case3_pass(){
   
   TEST_ASSERT_EQUAL_PTR(&Node5, root);  
   TEST_ASSERT_EQUAL(1, result->data);  
-  TEST_ASSERT_EQUAL(0, result->balance);  
+  TEST_ASSERT_EQUAL(100, root->leftChild->data);  
+  TEST_ASSERT_EQUAL(200, root->rightChild->data);  
+  TEST_ASSERT_EQUAL(0, root->balance);  
   TEST_ASSERT_EQUAL(150, root->data);  
    
 }
@@ -717,7 +754,7 @@ void test_avlRemove_should_get_1_case3_pass(){
 *        \     \               \     \            \
 *        175    250             175  250          175
 */
-void test_avlRemove_should_get_1_case4_pass(){
+void test_avlRemove_left_tree_should_get_1_case4_pass(){
   Node Node8 = {.data = 250, .balance = 0, .leftChild = NULL, .rightChild = NULL};
   Node Node7 = {.data = 220, .balance = 1, .leftChild = NULL, .rightChild = &Node8};
   Node Node6 = {.data = 175, .balance = 0, .leftChild = NULL, .rightChild = NULL};
@@ -735,8 +772,10 @@ void test_avlRemove_should_get_1_case4_pass(){
   TEST_ASSERT_EQUAL_PTR(&Node4, root);  
   TEST_ASSERT_EQUAL_PTR(&Node1, root->leftChild);  
   TEST_ASSERT_EQUAL_PTR(&Node2, root->leftChild->leftChild);  
+  TEST_ASSERT_EQUAL(100, root->leftChild->data);  
+  TEST_ASSERT_EQUAL(220, root->rightChild->data);  
   TEST_ASSERT_EQUAL(1, result->data);  
-  TEST_ASSERT_EQUAL(0, result->balance);  
+  TEST_ASSERT_EQUAL(-1, root->balance);  
   TEST_ASSERT_EQUAL(200, root->data);  
    
 }
@@ -748,7 +787,7 @@ void test_avlRemove_should_get_1_case4_pass(){
 *    \
 *     40
 */
-void test_avlRemove_should_get_25_case5_pass(){
+void test_avlRemove_left_tree_should_get_25_case5_pass(){
   Node Node4 = {.data = 200, .balance = 0, .leftChild = NULL, .rightChild = NULL};
   Node Node3 = {.data = 40, .balance = 0, .leftChild = NULL, .rightChild = NULL};
   Node Node2 = {.data = 25, .balance = 1, .leftChild = NULL, .rightChild = &Node3};
@@ -761,7 +800,9 @@ void test_avlRemove_should_get_25_case5_pass(){
   TEST_ASSERT_EQUAL_PTR(&Node1, root);  
   TEST_ASSERT_EQUAL_PTR(&Node3, root->leftChild);  
   TEST_ASSERT_EQUAL(25, result->data);  
-  TEST_ASSERT_EQUAL(1, result->balance);  
+  TEST_ASSERT_EQUAL(40, root->leftChild->data);  
+  TEST_ASSERT_EQUAL(200, root->rightChild->data);  
+  TEST_ASSERT_EQUAL(0, root->balance);  
   TEST_ASSERT_EQUAL(50, root->data);  
    
 }
@@ -773,7 +814,7 @@ void test_avlRemove_should_get_25_case5_pass(){
 *   / \                   \
 *  1  40                   40
 */
-void test_avlRemove_should_get_25_case6_pass(){
+void test_avlRemove_left_tree_should_get_25_case6_pass(){
   Node Node5 = {.data = 200, .balance = 0, .leftChild = NULL, .rightChild = NULL};
   Node Node4 = {.data = 40, .balance = 0, .leftChild = NULL, .rightChild = NULL};
   Node Node3 = {.data = 1, .balance = 0, .leftChild = NULL, .rightChild = NULL};
@@ -787,7 +828,9 @@ void test_avlRemove_should_get_25_case6_pass(){
   TEST_ASSERT_EQUAL_PTR(&Node1, root);  
   TEST_ASSERT_EQUAL_PTR(&Node3, root->leftChild);  
   TEST_ASSERT_EQUAL(25, result->data);  
-  TEST_ASSERT_EQUAL(0, result->balance);  
+  TEST_ASSERT_EQUAL(1, root->leftChild->data);  
+  TEST_ASSERT_EQUAL(200, root->rightChild->data);  
+  TEST_ASSERT_EQUAL(-1, root->balance);  
   TEST_ASSERT_EQUAL(50, root->data);  
    
 }
@@ -801,7 +844,7 @@ void test_avlRemove_should_get_25_case6_pass(){
 *      \           
 *      90           
 */
-void test_avlRemove_should_get_150_pass(){
+void test_avlRemove_left_tree_should_get_150_pass(){
   Node Node7 = {.data = 250, .balance = 0, .leftChild = NULL, .rightChild = NULL};
   Node Node6 = {.data = 200, .balance = 1, .leftChild = NULL, .rightChild = &Node7};
   Node Node5 = {.data = 90, .balance = 0, .leftChild = NULL, .rightChild = NULL};
@@ -818,7 +861,9 @@ void test_avlRemove_should_get_150_pass(){
   TEST_ASSERT_EQUAL_PTR(&Node5, root);  
   TEST_ASSERT_EQUAL_PTR(&Node2, root->leftChild);  
   TEST_ASSERT_EQUAL(150, result->data);  
-  TEST_ASSERT_EQUAL(-1, result->balance);  
+  TEST_ASSERT_EQUAL(25, root->leftChild->data);  
+  TEST_ASSERT_EQUAL(200, root->rightChild->data);  
+  TEST_ASSERT_EQUAL(0, root->balance);  
   TEST_ASSERT_EQUAL(90, root->data);  
    
 }
@@ -832,7 +877,7 @@ void test_avlRemove_should_get_150_pass(){
 *   /  \                   /
 *  40   90                40
 */
-void test_avlRemove_should_get_150_case2_pass(){
+void test_avlRemove_left_tree_should_get_150_case2_pass(){
   Node Node8 = {.data = 250, .balance = 0, .leftChild = NULL, .rightChild = NULL};
   Node Node7 = {.data = 200, .balance = 1, .leftChild = NULL, .rightChild = &Node8};
   Node Node6 = {.data = 90, .balance = 0, .leftChild = NULL, .rightChild = NULL};
@@ -849,32 +894,305 @@ void test_avlRemove_should_get_150_case2_pass(){
   
   TEST_ASSERT_EQUAL_PTR(&Node6, root);  
   TEST_ASSERT_EQUAL_PTR(&Node2, root->leftChild);  
+  TEST_ASSERT_EQUAL(25, root->leftChild->data);  
+  TEST_ASSERT_EQUAL(200, root->rightChild->data);  
   TEST_ASSERT_EQUAL(150, result->data);  
-  TEST_ASSERT_EQUAL(-1, result->balance);  
+  TEST_ASSERT_EQUAL(-1, root->balance);  
   TEST_ASSERT_EQUAL(90, root->data);  
    
 }
 
+/**
+ *        50                 50
+ *      /   \               /  \
+ *     25   150    =>     25   150
+ *    /                  /
+ *   1                  1
+ */
+void test_avlRemove_right_tree_cannot_be_found_should_get_NULL_pass(){
+  Node Node4 = {.data = 150, .balance = 0, .leftChild = NULL, .rightChild = NULL};
+  Node Node3 = {.data = 1, .balance = 0, .leftChild = NULL, .rightChild = NULL};
+  Node Node2 = {.data = 25, .balance = -1, .leftChild = &Node3, .rightChild = NULL};
+  Node Node1 = {.data = 50, .balance = -1, .leftChild = &Node2, .rightChild = &Node4};
+  Node nodeToRemove = {.data = 200, .balance = 0, .leftChild = NULL, .rightChild = NULL};
+  Node *root = &Node1;
+  Node *result;
 
+  result = avlRemove(&root, &nodeToRemove);
+  
+  TEST_ASSERT_EQUAL_PTR(&Node1, root);  
+  TEST_ASSERT_EQUAL(25, root->leftChild->data);  
+  TEST_ASSERT_EQUAL(150, root->rightChild->data);  
+  TEST_ASSERT_NULL(result);
+  TEST_ASSERT_EQUAL(50, root->data);  
+  
+}
 
+/**
+ *      50             50
+ *     /  \     =>    /
+ *   25   150       25
+ */
+void test_avlRemove_right_tree_should_get_150_pass(){
+  Node Node3 = {.data = 150, .balance = 0, .leftChild = NULL, .rightChild = NULL};
+  Node Node2 = {.data = 25, .balance = 0, .leftChild = NULL, .rightChild = NULL};
+  Node Node1 = {.data = 50, .balance = 0, .leftChild = &Node2, .rightChild = &Node3};
+  Node nodeToRemove = {.data = 150, .balance = 0, .leftChild = NULL, .rightChild = NULL};
+  Node *root = &Node1;
+  Node *result;
 
+  result = avlRemove(&root, &nodeToRemove);
+  
+  TEST_ASSERT_EQUAL_PTR(&Node1, root);  
+  TEST_ASSERT_EQUAL(150, result->data);  
+  TEST_ASSERT_EQUAL(25, root->leftChild->data);   
+  TEST_ASSERT_EQUAL(50, root->data);  
+  TEST_ASSERT_EQUAL(-1, root->balance);  
+  
+}
 
+/**
+ *        50                 50            25
+ *      /   \               /            /   \
+ *     25   150    =>     25       =>   1    50
+ *    /                  /
+ *   1                  1
+ */
+void test_avlRemove_right_tree_should_get_150_case2_pass(){
+  Node Node4 = {.data = 150, .balance = 0, .leftChild = NULL, .rightChild = NULL};
+  Node Node3 = {.data = 1, .balance = 0, .leftChild = NULL, .rightChild = NULL};
+  Node Node2 = {.data = 25, .balance = -1, .leftChild = &Node3, .rightChild = NULL};
+  Node Node1 = {.data = 50, .balance = -1, .leftChild = &Node2, .rightChild = &Node4};
+  Node nodeToRemove = {.data = 150, .balance = 0, .leftChild = NULL, .rightChild = NULL};
+  Node *root = &Node1;
+  Node *result;
 
+  result = avlRemove(&root, &nodeToRemove);
+  
+  TEST_ASSERT_EQUAL_PTR(&Node2, root);  
+  TEST_ASSERT_EQUAL(150, result->data);  
+  TEST_ASSERT_EQUAL(25, root->data);  
+  TEST_ASSERT_EQUAL(1, root->leftChild->data);  
+  TEST_ASSERT_EQUAL(50, root->rightChild->data);  
+  TEST_ASSERT_EQUAL(0, root->balance);  
+  
+}
 
+/**
+ *        50                 50
+ *      /   \               /  \
+ *     25   150    =>     25   200
+ *    /       \          /
+ *   1       200        1
+ */
+void test_avlRemove_right_tree_should_get_200_pass(){
+  Node Node5 = {.data = 200, .balance = 0, .leftChild = NULL, .rightChild = NULL};
+  Node Node4 = {.data = 150, .balance = 1, .leftChild = NULL, .rightChild = &Node5};
+  Node Node3 = {.data = 1, .balance = 0, .leftChild = NULL, .rightChild = NULL};
+  Node Node2 = {.data = 25, .balance = -1, .leftChild = &Node3, .rightChild = NULL};
+  Node Node1 = {.data = 50, .balance = 0, .leftChild = &Node2, .rightChild = &Node4};
+  Node nodeToRemove = {.data = 150, .balance = 0, .leftChild = NULL, .rightChild = &Node5};
+  Node *root = &Node1;
+  Node *result;
 
+  result = avlRemove(&root, &nodeToRemove);
+  
+  TEST_ASSERT_EQUAL_PTR(&Node1, root);  
+  TEST_ASSERT_EQUAL(150, result->data);  
+  TEST_ASSERT_EQUAL(50, root->data); 
+  TEST_ASSERT_EQUAL(25, root->leftChild->data);  
+  TEST_ASSERT_EQUAL(200, root->rightChild->data);  
+  TEST_ASSERT_EQUAL(-1, root->balance);  
+  
+}
 
+/**
+ *        100                  100                50
+ *      /    \               /    \             /    \
+ *     25    150           25     150         25     100
+ *    /  \     \    =>    /  \          =>   /  \    /  \
+ *   1   50    200       1   50             1   40  75  150
+ *      /  \                /  \
+ *     40  75              40  75
+ */
+void test_avlRemove_right_tree_should_get_200_case2_pass(){
+  Node Node8 = {.data = 200, .balance = 0, .leftChild = NULL, .rightChild = NULL};
+  Node Node7 = {.data = 150, .balance = 1, .leftChild = NULL, .rightChild = &Node8};
+  Node Node6 = {.data = 75, .balance = 0, .leftChild = NULL, .rightChild = NULL};
+  Node Node5 = {.data = 40, .balance = 0, .leftChild = NULL, .rightChild = NULL};
+  Node Node4 = {.data = 50, .balance = 0, .leftChild = &Node5, .rightChild = &Node6};
+  Node Node3 = {.data = 1, .balance = 0, .leftChild = NULL, .rightChild = NULL};
+  Node Node2 = {.data = 25, .balance = 1, .leftChild = &Node3, .rightChild = &Node4};
+  Node Node1 = {.data = 100, .balance = -1, .leftChild = &Node2, .rightChild = &Node7};
+  Node nodeToRemove = {.data = 200, .balance = 0, .leftChild = NULL, .rightChild = NULL};
+  Node *root = &Node1;
+  Node *result;
 
+  result = avlRemove(&root, &nodeToRemove);
+  
+  TEST_ASSERT_EQUAL_PTR(&Node4, root);  
+  TEST_ASSERT_EQUAL(200, result->data);  
+  TEST_ASSERT_EQUAL(50, root->data);  
+  TEST_ASSERT_EQUAL(25, root->leftChild->data);  
+  TEST_ASSERT_EQUAL(100, root->rightChild->data);  
+  TEST_ASSERT_EQUAL(0, root->balance);  
+  
+}
 
+/**
+ *        100                  100                50
+ *      /    \               /    \             /    \
+ *     25    150           25     150         25     100
+ *    /  \     \    =>    /  \          =>   /       /  \
+ *   1   50    200       1   50             1      75  150
+ *         \                   \
+ *         75                  75
+ */
+void test_avlRemove_right_tree_should_get_200_case3_pass(){
+  Node Node7 = {.data = 200, .balance = 0, .leftChild = NULL, .rightChild = NULL};
+  Node Node6 = {.data = 150, .balance = 1, .leftChild = NULL, .rightChild = &Node7};
+  Node Node5 = {.data = 75, .balance = 0, .leftChild = NULL, .rightChild = NULL};
+  Node Node4 = {.data = 50, .balance = 1, .leftChild = NULL, .rightChild = &Node6};
+  Node Node3 = {.data = 1, .balance = 0, .leftChild = NULL, .rightChild = NULL};
+  Node Node2 = {.data = 25, .balance = 1, .leftChild = &Node3, .rightChild = &Node4};
+  Node Node1 = {.data = 100, .balance = -1, .leftChild = &Node2, .rightChild = &Node7};
+  Node nodeToRemove = {.data = 200, .balance = 0, .leftChild = NULL, .rightChild = NULL};
+  Node *root = &Node1;
+  Node *result;
 
+  result = avlRemove(&root, &nodeToRemove);
+  
+  TEST_ASSERT_EQUAL_PTR(&Node4, root);  
+  TEST_ASSERT_EQUAL(200, result->data);  
+  TEST_ASSERT_EQUAL(50, root->data);  
+  TEST_ASSERT_EQUAL(25, root->leftChild->data);  
+  TEST_ASSERT_EQUAL(100, root->rightChild->data);  
+  TEST_ASSERT_EQUAL(0, root->balance);  
+  
+}
 
+/**
+ *        100                  100                50
+ *      /    \               /    \             /    \
+ *     25    150           25     150         25     100
+ *    /  \     \    =>    /  \          =>   /  \       \
+ *   1   50    200       1   50             1   40      150
+ *      /                   /
+ *     40                  40
+ */
+void test_avlRemove_right_tree_should_get_200_case4_pass(){
+  Node Node7 = {.data = 200, .balance = 0, .leftChild = NULL, .rightChild = NULL};
+  Node Node6 = {.data = 150, .balance = 1, .leftChild = NULL, .rightChild = &Node7};
+  Node Node5 = {.data = 40, .balance = 0, .leftChild = NULL, .rightChild = NULL};
+  Node Node4 = {.data = 50, .balance = -1, .leftChild = &Node5, .rightChild = NULL};
+  Node Node3 = {.data = 1, .balance = 0, .leftChild = NULL, .rightChild = NULL};
+  Node Node2 = {.data = 25, .balance = 1, .leftChild = &Node3, .rightChild = &Node4};
+  Node Node1 = {.data = 100, .balance = -1, .leftChild = &Node2, .rightChild = &Node7};
+  Node nodeToRemove = {.data = 200, .balance = 0, .leftChild = NULL, .rightChild = NULL};
+  Node *root = &Node1;
+  Node *result;
 
+  result = avlRemove(&root, &nodeToRemove);
+  
+  TEST_ASSERT_EQUAL_PTR(&Node4, root);  
+  TEST_ASSERT_EQUAL(200, result->data);  
+  TEST_ASSERT_EQUAL(50, root->data);  
+  TEST_ASSERT_EQUAL(25, root->leftChild->data);  
+  TEST_ASSERT_EQUAL(100, root->rightChild->data);  
+  TEST_ASSERT_EQUAL(0, root->balance);  
+  
+}
 
+/**
+ *        100                  100                40
+ *      /    \               /    \             /    \
+ *     40    150           40     150         25     100
+ *    /  \     \    =>    /  \          =>   /       /  \
+ *   25  75   200        25  75             1      75   150
+ *  /    /              /    /                    /
+ * 1    50             1    50                  50
+ */
+void test_avlRemove_right_tree_should_get_200_case5_pass(){
+  Node Node8 = {.data = 200, .balance = 0, .leftChild = NULL, .rightChild = NULL};
+  Node Node7 = {.data = 150, .balance = 1, .leftChild = NULL, .rightChild = &Node8};
+  Node Node6 = {.data = 50, .balance = 0, .leftChild = NULL, .rightChild = NULL};
+  Node Node5 = {.data = 75, .balance = -1, .leftChild = &Node6, .rightChild = NULL};
+  Node Node4 = {.data = 1, .balance = 0, .leftChild = NULL, .rightChild = NULL};
+  Node Node3 = {.data = 25, .balance = -1, .leftChild = &Node4, .rightChild = NULL};
+  Node Node2 = {.data = 40, .balance = 0, .leftChild = &Node3, .rightChild = &Node5};
+  Node Node1 = {.data = 100, .balance = -1, .leftChild = &Node2, .rightChild = &Node7};
+  Node nodeToRemove = {.data = 200, .balance = 0, .leftChild = NULL, .rightChild = NULL};
+  Node *root = &Node1;
+  Node *result;
+  
+  result = avlRemove(&root, &nodeToRemove);
 
+  TEST_ASSERT_EQUAL_PTR(&Node2, root);  
+  TEST_ASSERT_EQUAL(200, result->data); 
+  TEST_ASSERT_EQUAL(40, root->data);  
+  TEST_ASSERT_EQUAL(25, root->leftChild->data);  
+  TEST_ASSERT_EQUAL(100, root->rightChild->data);  
+  TEST_ASSERT_EQUAL(1, root->balance);  
+  
+}
 
+/**
+ *      50             50
+ *     /  \     =>    /  \
+ *   25   200       25   150
+ *        /
+ *      150
+ */
+void test_avlRemove_right_tree_should_get_200_case6_pass(){
+  Node Node4 = {.data = 150, .balance = 0, .leftChild = NULL, .rightChild = NULL};
+  Node Node3 = {.data = 200, .balance = -1, .leftChild = &Node4, .rightChild = NULL};
+  Node Node2 = {.data = 25, .balance = 0, .leftChild = NULL, .rightChild = NULL};
+  Node Node1 = {.data = 50, .balance = 1, .leftChild = &Node2, .rightChild = &Node3};
+  Node nodeToRemove = {.data = 200, .balance = 0, .leftChild = &Node4, .rightChild = NULL};
+  Node *root = &Node1;
+  Node *result;
+  
+  result = avlRemove(&root, &nodeToRemove);
 
+  TEST_ASSERT_EQUAL_PTR(&Node1, root);  
+  TEST_ASSERT_EQUAL(200, result->data); 
+  TEST_ASSERT_EQUAL(50, root->data);  
+  TEST_ASSERT_EQUAL(25, root->leftChild->data);  
+  TEST_ASSERT_EQUAL(150, root->rightChild->data);  
+  TEST_ASSERT_EQUAL(0, root->balance);  
+  
+}
 
+/**
+ *      50             50
+ *     /  \     =>    /  \
+ *   25   200       25   150
+ *        / \              \
+ *      150 220            220
+ *
+ * where 200 is being removed
+ */
+void test_avlRemove_right_tree_should_get_200_case7_pass(){
+  Node Node5 = {.data = 220, .balance = 0, .leftChild = NULL, .rightChild = NULL};
+  Node Node4 = {.data = 150, .balance = 0, .leftChild = NULL, .rightChild = NULL};
+  Node Node3 = {.data = 200, .balance = 0, .leftChild = &Node4, .rightChild = &Node5};
+  Node Node2 = {.data = 25, .balance = 0, .leftChild = NULL, .rightChild = NULL};
+  Node Node1 = {.data = 50, .balance = 1, .leftChild = &Node2, .rightChild = &Node3};
+  Node nodeToRemove = {.data = 200, .balance = 0, .leftChild = &Node4, .rightChild = &Node5};
+  Node *root = &Node1;
+  Node *result;
+  
+  result = avlRemove(&root, &nodeToRemove);
 
-
+  TEST_ASSERT_EQUAL_PTR(&Node1, root);  
+  TEST_ASSERT_EQUAL(200, result->data); 
+  TEST_ASSERT_EQUAL(50, root->data);  
+  TEST_ASSERT_EQUAL(25, root->leftChild->data);  
+  TEST_ASSERT_EQUAL(150, root->rightChild->data);  
+  TEST_ASSERT_EQUAL(220, root->rightChild->rightChild->data);  
+  TEST_ASSERT_EQUAL(1, root->balance);  
+  
+}
 
 
 
