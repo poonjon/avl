@@ -1,4 +1,5 @@
 #include "AVLInt.h"
+#include <stdio.h>
 
 int compareInt(void *nodeInTree, void *nodeToCompare){
   Node *node1 = (Node *)nodeInTree;
