@@ -124,7 +124,8 @@ Node *avlGetReplacer(Node **ptrToRoot){
 Node *avlRemove(Node **ptrToRoot, Node *nodeToRemove){
   Node *remove;
   Node *tempLeft, *tempRight, *tempBalance;
-    
+  int nodeBalanceLeftCompare;
+
     if((*ptrToRoot) == NULL){
       remove = NULL;
       return remove;
@@ -133,20 +134,27 @@ Node *avlRemove(Node **ptrToRoot, Node *nodeToRemove){
     
     else if(nodeToRemove->data == (*ptrToRoot)->data){
       
-    
       if(nodeToRemove->leftChild != NULL){
         
-        tempLeft = (*ptrToRoot)->leftChild;
-        tempRight = (*ptrToRoot)->rightChild;
-        
+        tempLeft = (*ptrToRoot)->leftChild;                         //to save previous left child
+        tempRight = (*ptrToRoot)->rightChild;                       //to save previous right child
+        tempBalance = (*ptrToRoot);                                 //to save previous root        
+        nodeBalanceLeftCompare = (*ptrToRoot)->leftChild->balance;  //to save previous root balance to compare
+     
         (*ptrToRoot) = avlGetReplacer(&nodeToRemove->leftChild);
-       
-          if((*ptrToRoot)->leftChild == NULL)
-            (*ptrToRoot)->balance++;
-          
-          (*ptrToRoot)->leftChild = tempLeft;
-          (*ptrToRoot)->rightChild = tempRight;
-          
+        
+        (*ptrToRoot)->balance = tempBalance->balance;
+        (*ptrToRoot)->leftChild = tempLeft;
+        (*ptrToRoot)->rightChild = tempRight;
+
+        if((*ptrToRoot)->leftChild == (*ptrToRoot))
+          (*ptrToRoot)->balance++;
+        else if((*ptrToRoot)->leftChild->data == tempLeft->data){            
+          if((nodeBalanceLeftCompare - (*ptrToRoot)->leftChild->balance) == -1)
+            (*ptrToRoot)->balance++; 
+          else if((*ptrToRoot)->leftChild->balance == 0)
+            (*ptrToRoot)->balance++; 
+        }
         
         remove = nodeToRemove;
         nodeToRemove = NULL;
@@ -157,13 +165,13 @@ Node *avlRemove(Node **ptrToRoot, Node *nodeToRemove){
       else if(nodeToRemove->rightChild != NULL){
 
         (*ptrToRoot) = avlGetReplacer(&nodeToRemove->rightChild);   
-  
+        
         remove = nodeToRemove;
         nodeToRemove = NULL;
         
         return remove;
       }
-      
+    
       remove = (*ptrToRoot);
       (*ptrToRoot) = NULL;
       
@@ -172,10 +180,8 @@ Node *avlRemove(Node **ptrToRoot, Node *nodeToRemove){
     
     else if(nodeToRemove->data < (*ptrToRoot)->data){
       
-        tempBalance = (*ptrToRoot)->leftChild;
-        
+      tempBalance = (*ptrToRoot)->leftChild;
       remove = avlRemove(&(*ptrToRoot)->leftChild, nodeToRemove);
-      
       
       if((*ptrToRoot)->leftChild == NULL)
         (*ptrToRoot)->balance++;
@@ -201,25 +207,18 @@ Node *avlRemove(Node **ptrToRoot, Node *nodeToRemove){
     }
     
     else if(nodeToRemove->data > (*ptrToRoot)->data){
-           printf("nah");
+       
+      tempBalance = (*ptrToRoot)->rightChild;   
       remove = avlRemove(&(*ptrToRoot)->rightChild, nodeToRemove);
       
       if((*ptrToRoot)->rightChild == NULL)
         (*ptrToRoot)->balance--;
-      
+        
       else if((*ptrToRoot)->rightChild->balance == 0){
-               
-        if((*ptrToRoot)->rightChild->balance == 0 && (*ptrToRoot)->rightChild->leftChild != NULL){    
-          if((*ptrToRoot)->rightChild->leftChild->data == (*ptrToRoot)->rightChild->data) //for case 1140
-            (*ptrToRoot)->balance--;
-        }
-        
-        else if((*ptrToRoot)->rightChild->leftChild == NULL && (*ptrToRoot)->rightChild->balance ==0)
+        if(tempBalance->balance != (*ptrToRoot)->balance)
           (*ptrToRoot)->balance--;
-        
-        
-        
-      } 
+      }
+
     
       if((*ptrToRoot)->balance == 2 && (*ptrToRoot)->rightChild->balance == 1)
         (*ptrToRoot) = leftRotate((*ptrToRoot));
