@@ -9,7 +9,7 @@ void tearDown(){}
 /**
 *     1
 */
-void test_addavl_node1_should_pass(){
+void test_addavl_1_node_should_pass(){
   Node Node1 = {.data = 1, .balance = 2, .leftChild = NULL, .rightChild = NULL};
   Node *root = NULL;
   
@@ -23,9 +23,9 @@ void test_addavl_node1_should_pass(){
 *      \
 *       50
 */
-void test_addavl_node2_50_should_pass(){
-  Node Node1 = {.data = 1, .balance = 0, .leftChild = NULL, .rightChild = NULL};
+void test_addavl_2_nodes_should_pass(){
   Node Node2 = {.data = 50, .balance = 0, .leftChild = NULL, .rightChild = NULL};
+  Node Node1 = {.data = 1, .balance = 0, .leftChild = NULL, .rightChild = NULL};
   Node *root = NULL;
   
   root = avlAddInt(root, &Node1);
@@ -44,10 +44,10 @@ void test_addavl_node2_50_should_pass(){
 *          100
 *
 */
-void test_addavl_node3_100_should_pass(){
-  Node Node1 = {.data = 1, .balance = 0, .leftChild = NULL, .rightChild = NULL};
-  Node Node2 = {.data = 50, .balance = 0, .leftChild = NULL, .rightChild = NULL};
+void test_addavl_3_nodes_should_pass(){
   Node Node3 = {.data = 100, .balance = 0, .leftChild = NULL, .rightChild = NULL};
+  Node Node2 = {.data = 50, .balance = 0, .leftChild = NULL, .rightChild = NULL};
+  Node Node1 = {.data = 1, .balance = 0, .leftChild = NULL, .rightChild = NULL};
   Node *root = NULL;
   
   root = avlAddInt(root, &Node1);
@@ -70,11 +70,11 @@ void test_addavl_node3_100_should_pass(){
 *          /               
 *        75               
 */
-void test_addavl_node4_75_should_pass(){
-  Node Node1 = {.data = 1, .balance = 0, .leftChild = NULL, .rightChild = NULL};
-  Node Node2 = {.data = 50, .balance = 0, .leftChild = NULL, .rightChild = NULL};
-  Node Node3 = {.data = 100, .balance = 0, .leftChild = NULL, .rightChild = NULL};
+void test_addavl_4_nodes_should_pass(){
   Node Node4 = {.data = 75, .balance = 0, .leftChild = NULL, .rightChild = NULL};
+  Node Node3 = {.data = 100, .balance = 0, .leftChild = NULL, .rightChild = NULL};
+  Node Node2 = {.data = 50, .balance = 0, .leftChild = NULL, .rightChild = NULL};
+  Node Node1 = {.data = 1, .balance = 0, .leftChild = NULL, .rightChild = NULL};
   Node *root = NULL;
   Node *temp = root;
   
@@ -102,12 +102,12 @@ void test_addavl_node4_75_should_pass(){
 *          /  \             
 *        75    150           
 */
-void test_addavl_node4_150_should_pass(){
-  Node Node1 = {.data = 1, .balance = 0, .leftChild = NULL, .rightChild = NULL};
-  Node Node2 = {.data = 50, .balance = 0, .leftChild = NULL, .rightChild = NULL};
-  Node Node3 = {.data = 100, .balance = 0, .leftChild = NULL, .rightChild = NULL};
-  Node Node4 = {.data = 75, .balance = 0, .leftChild = NULL, .rightChild = NULL};
+void test_addavl_5_nodes_should_pass(){
   Node Node5 = {.data = 150, .balance = 0, .leftChild = NULL, .rightChild = NULL};
+  Node Node4 = {.data = 75, .balance = 0, .leftChild = NULL, .rightChild = NULL};
+  Node Node3 = {.data = 100, .balance = 0, .leftChild = NULL, .rightChild = NULL};
+  Node Node2 = {.data = 50, .balance = 0, .leftChild = NULL, .rightChild = NULL};
+  Node Node1 = {.data = 1, .balance = 0, .leftChild = NULL, .rightChild = NULL};
   Node *root = NULL;
   Node *temp = root;
   
@@ -140,13 +140,13 @@ void test_addavl_node4_150_should_pass(){
 *                 \
 *                 200                             
 */
-void test_addavl_node4_200_should_pass(){
-  Node Node1 = {.data = 1, .balance = 0, .leftChild = NULL, .rightChild = NULL};
-  Node Node2 = {.data = 50, .balance = 0, .leftChild = NULL, .rightChild = NULL};
-  Node Node3 = {.data = 100, .balance = 0, .leftChild = NULL, .rightChild = NULL};
-  Node Node4 = {.data = 75, .balance = 0, .leftChild = NULL, .rightChild = NULL};
-  Node Node5 = {.data = 150, .balance = 0, .leftChild = NULL, .rightChild = NULL};
+void test_addavl_6_nodes_should_pass(){
   Node Node6 = {.data = 200, .balance = 0, .leftChild = NULL, .rightChild = NULL};
+  Node Node5 = {.data = 150, .balance = 0, .leftChild = NULL, .rightChild = NULL};
+  Node Node4 = {.data = 75, .balance = 0, .leftChild = NULL, .rightChild = NULL};
+  Node Node3 = {.data = 100, .balance = 0, .leftChild = NULL, .rightChild = NULL};
+  Node Node2 = {.data = 50, .balance = 0, .leftChild = NULL, .rightChild = NULL};
+  Node Node1 = {.data = 1, .balance = 0, .leftChild = NULL, .rightChild = NULL};
   Node *root = NULL;
   Node *tempLeft = root;
   Node *tempRight = root;
@@ -183,14 +183,14 @@ void test_addavl_node4_200_should_pass(){
 *     /  \       \            /   \   /   \
 *    1    75      200        1    75 120  200                                     
 */
-void test_addavl_node4_120_should_pass(){
-  Node Node1 = {.data = 1, .balance = 0, .leftChild = NULL, .rightChild = NULL};
-  Node Node2 = {.data = 50, .balance = 0, .leftChild = NULL, .rightChild = NULL};
-  Node Node3 = {.data = 100, .balance = 0, .leftChild = NULL, .rightChild = NULL};
-  Node Node4 = {.data = 75, .balance = 0, .leftChild = NULL, .rightChild = NULL};
-  Node Node5 = {.data = 150, .balance = 0, .leftChild = NULL, .rightChild = NULL};
-  Node Node6 = {.data = 200, .balance = 0, .leftChild = NULL, .rightChild = NULL};
+void test_addavl_7_nodes_should_pass(){
   Node Node7 = {.data = 120, .balance = 0, .leftChild = NULL, .rightChild = NULL};
+  Node Node6 = {.data = 200, .balance = 0, .leftChild = NULL, .rightChild = NULL};
+  Node Node5 = {.data = 150, .balance = 0, .leftChild = NULL, .rightChild = NULL};
+  Node Node4 = {.data = 75, .balance = 0, .leftChild = NULL, .rightChild = NULL};
+  Node Node3 = {.data = 100, .balance = 0, .leftChild = NULL, .rightChild = NULL};
+  Node Node2 = {.data = 50, .balance = 0, .leftChild = NULL, .rightChild = NULL};
+  Node Node1 = {.data = 1, .balance = 0, .leftChild = NULL, .rightChild = NULL};
   Node *root = NULL;
   Node *tempLeft = root;
   Node *tempRight = root;
@@ -221,6 +221,40 @@ void test_addavl_node4_120_should_pass(){
    TEST_ASSERT_EQUAL(0, tempLeft->rightChild->balance);
    TEST_ASSERT_EQUAL(0, tempLeft->leftChild->balance);
   
+}
+
+ /**          
+  *         (50)                  (30) 
+  *         /  \                  /  \
+  *      (10) (100)            (10)  (50)
+  *       / \           =>     /     /  \
+  *     (5) (30)            (5)   (40) (100)
+  *           \        
+  *           (40)
+  */
+void test_addavl_6_nodes_doubleRightRotate_should_pass(){
+  Node Node6 = {.data = 40, .balance = 0, .leftChild = NULL, .rightChild = NULL};
+  Node Node5 = {.data = 30, .balance = 0, .leftChild = NULL, .rightChild = NULL};
+  Node Node4 = {.data = 100, .balance = 0, .leftChild = NULL, .rightChild = NULL};
+  Node Node3 = {.data = 50, .balance = 0, .leftChild = NULL, .rightChild = NULL};
+  Node Node2 = {.data = 10, .balance = 0, .leftChild = NULL, .rightChild = NULL};
+  Node Node1 = {.data = 5, .balance = 0, .leftChild = NULL, .rightChild = NULL};
+  
+  Node *root = NULL;
+
+  root = avlAddInt(root, &Node1);
+  root = avlAddInt(root, &Node2);
+  root = avlAddInt(root, &Node3);
+  root = avlAddInt(root, &Node4);
+  root = avlAddInt(root, &Node5);
+  root = avlAddInt(root, &Node6);
+  
+  TEST_ASSERT_EQUAL_PTR(&Node5, root);
+  TEST_ASSERT_EQUAL_PTR(&Node2, root->leftChild);
+  TEST_ASSERT_EQUAL_PTR(&Node3, root->rightChild);
+  TEST_ASSERT_EQUAL_PTR(&Node1, root->leftChild->leftChild);
+  TEST_ASSERT_EQUAL_PTR(&Node6, root->rightChild->leftChild);
+  TEST_ASSERT_EQUAL_PTR(&Node4, root->rightChild->rightChild);
 }
 
 /**

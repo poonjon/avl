@@ -19,7 +19,7 @@ Node *avlAdd(Node *root, Node *nodeToAdd, int(*compare)(void *, void *)){
     
     //if(root->data = nodeToAdd->data){
     if(compareResult == 0){
-      printf("nah");
+      printf("already in tree");
     }
     
     //else if(root->data < nodeToAdd->data){  //LEVEL 2: RIGHT

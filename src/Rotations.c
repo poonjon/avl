@@ -1,3 +1,5 @@
+#include "AVL.h"
+#include "AVLInt.h"
 #include "Rotations.h"
 #include <stdio.h>
 
